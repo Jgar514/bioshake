@@ -1,4 +1,6 @@
 'use client';
+import { HiOutlineRefresh } from 'react-icons/hi';
+
 
 import { useEffect, useState } from 'react';
 
@@ -57,9 +59,9 @@ export default function BioShake() {
       <div className="fixed bottom-6 right-6 z-50 pointer-events-auto">
         <button
           onClick={getRandomLink}
-          className="w-14 h-14 rounded-full bg-green-600 text-white text-2xl flex items-center justify-center shadow hover:bg-green-700 transition backdrop-blur-md backdrop-opacity-80"
+          className="w-14 h-14 rounded-full bg-green-600 text-white shadow-2xl flex items-center justify-center text-3xl hover:bg-green-700 transition-all duration-300 active:scale-95 backdrop-blur-md"
         >
-          🔄
+          <HiOutlineRefresh className="animate-spin-slow" />
         </button>
       </div>
     </div>
