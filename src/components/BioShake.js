@@ -12,9 +12,9 @@ export default function BioShake() {
       const links = await res.json();
       const random = links[Math.floor(Math.random() * links.length)];
       setLink(random);
-      setIframeInteractive(false);
+      setIframeInteractive(false); // reset unlock
     } catch (err) {
-      console.error('Error loading site:', err);
+      console.error('Failed to load link:', err);
     }
   };
 
@@ -28,14 +28,12 @@ export default function BioShake() {
       const total = Math.abs(x) + Math.abs(y) + Math.abs(z);
       if (total > 30 && Date.now() - lastShake > 1000) {
         lastShake = Date.now();
+        console.log('🚨 SHAKE DETECTED');
         getRandomLink();
       }
     };
 
-    if (
-      typeof window !== 'undefined' &&
-      typeof window.DeviceMotionEvent !== 'undefined'
-    ) {
+    if (typeof window !== 'undefined') {
       window.addEventListener('devicemotion', handleMotion);
     }
 
@@ -45,8 +43,7 @@ export default function BioShake() {
   }, []);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-black">
-      {/* 🔬 Full-screen iframe */}
+    <div className="relative w-screen h-screen bg-black overflow-hidden">
       {link && (
         <iframe
           src={link.url}
@@ -57,23 +54,21 @@ export default function BioShake() {
         />
       )}
 
-      {/* 👆 Tap to unlock */}
       {!iframeInteractive && (
         <div
           onClick={() => setIframeInteractive(true)}
-          className="fixed inset-0 z-10 flex items-center justify-center text-white text-sm bg-transparent"
+          className="fixed inset-0 z-10 flex items-center justify-center text-white"
         >
-          <div className="bg-black/60 px-4 py-2 rounded-full shadow-md">
-            👆 Tap to unlock and interact
+          <div className="bg-black/60 px-4 py-2 rounded-full text-sm">
+            👆 Tap to unlock the site
           </div>
         </div>
       )}
 
-      {/* 🔄 Floating button */}
-      <div className="fixed bottom-6 right-6 z-50 pointer-events-auto">
+      <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={getRandomLink}
-          className="w-14 h-14 rounded-full bg-green-600 text-white shadow-xl flex items-center justify-center text-2xl font-bold hover:bg-green-700 transition backdrop-blur-md backdrop-opacity-80"
+          className="w-14 h-14 rounded-full bg-green-600 text-white text-2xl flex items-center justify-center shadow hover:bg-green-700 transition"
         >
           🔄
         </button>
